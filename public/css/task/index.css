@@ -1,0 +1,43 @@
+* { box-sizing: border-box; margin: 0; }
+html { height: 100%; }
+body { background-color: #141d26; height: 100vh; }
+body h1 { margin: 20px; }
+
+.flex { display: flex; }
+.flex-center { align-items: center; justify-content: center; }
+.flex-align-center { align-items: center; }
+.flex-col { flex-direction: column; }
+
+.container { height: 100%; width: 100%; flex: 1; max-width: 800px; padding: 20px 50px 50px; }
+.container .header { color: #fff; }
+
+.container.container--footer { max-height: 20px; }
+.container.container--footer img { margin: 0 10px; width: 15%;}
+.container.container--footer a { text-decoration: none; color: #fff !important; width: 230px;}
+
+.container .card { background-color: #fefefe; border-radius: 5px; flex: 1; width: 100%; box-shadow: 1px 1px 16px #000; max-height: 675px; }
+.container .card.card--message { position: absolute; bottom: 30%; width: auto; padding: 10px; padding-left: 50px; padding-right: 30px; border-top-left-radius: 0; border-bottom-left-radius: 0; transition: all 0.5s ease-in-out; box-shadow: 1px 1px 1px #c9c9c9; }
+.container .card.card--message-hide { left: -100%; }
+.container .card.card--message-show { left: 0; }
+
+.container .card .card__body { height: 100%; width: 100%; padding: 5px; }
+.container .card .card__body.card__body--grid { display: grid; grid-template-rows: 1fr auto; grid-template-columns: 1fr 1fr; }
+.container .card .card__body.card__body--grid > div:last-of-type { grid-column-start: 1; grid-column-end: 3; }
+
+.container .card .card__body .card__item { background: #fff; border-radius: 5px; margin: 5px; box-shadow: 1px 1px 10px #d1d1d1; padding: 13px; }
+.container .card .card__body .card__item.card__item--autoscroll { overflow: auto; }
+.container .card .card__body .card__item.card__item--json { transition: all 0.5s ease-in-out; }
+
+#form-loadfile { margin: 0 auto; padding: 20px; width: 100%; }
+#form-loadfile label,
+#form-loadfile button { margin: 0; padding: 10px; background-color: #36363d; border: none; color: #fff; cursor: pointer; text-align: center; transition: all 0.2s ease-in-out; }
+
+#form-loadfile label { border-radius: 10px 10px 0 0; }
+#form-loadfile label:hover { background-color: #22272d; }
+
+#form-loadfile button { border-radius: 0 0 10px 10px; background-color: #cfd2cf; color: #000; }
+#form-loadfile button.active { background-color: #a4e2a4; }
+#form-loadfile button.active:hover { background-color: #76d176; }
+#form-loadfile button:not(.active):hover { background-color: #c8c7c7; }
+
+#form-loadfile [type='file'] { display: none; }

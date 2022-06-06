@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="/css/task/index.css" rel="stylesheet" type="text/css" />
+
+    <title>ZainCash Product Development Test</title>
+  </head>
+  <body class="flex flex-center flex-col">
+    <div class="container flex flex-center flex-col">
+      <h1 class="header">Employees Files Task</h1>
+      <div class="card">
+        <div class="card__body card__body--grid">
+          <div class="card__item card__item--autoscroll card__item--json">
+            <pre id="jsonRequest"></pre>
+          </div>
+          <div class="card__item card__item--autoscroll card__item--json">
+            <pre id="jsonResult"></pre>
+          </div>
+          <div class="card__item flex flex-center">
+            <form
+              id="form-loadfile"
+              method="post"
+              enctype="multipart/form-data"
+              class="flex flex-col"
+            >
+              <label id="filelabel" for="filebrowseinput">Choose JSON File</label>
+              <input
+                id="filebrowseinput"
+                type="file"
+                name="jsonFile"
+                accept="application/json, text/plain"
+              />
+              <button id="filebtnsubmit" type="submit">GET EMPLOYEE Files</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div id="message" class="card card--message card--message-hide">!</div>
+    </div>
+    <div class="container container--footer">
+      <a
+        target="_blank"
+        title="linkedin"
+        class="flex flex-align-center"
+        href="https://www.linkedin.com/in/ali-hassan-b6b4b5198/"
+      >
+        <img src="linkedin.png" />
+        <p>Ali Hassan AH 2022</p>
+      </a>
+    </div>
+    <script>
+      //
+      // ###############################################
+      // AH 2022 ZainCash Product Development Test
+      // ###############################################
+      //
+
+      // ===============================================
+      // show result data on screen from server
+      // ===============================================
+
+      const jsonRequest = '<%-jsonRequest%>';
+      const jsonResult = '<%-jsonResult%>';
+
+      displayJsonDataInPreById('jsonRequest', jsonRequest);
+      displayJsonDataInPreById('jsonResult', jsonResult);
+
+      function displayJsonDataInPreById(id, jsonData) {
+        const data = JSON.parse(jsonData);
+        const element = document.getElementById(id);
+        element.textContent = JSON.stringify(data, undefined, 2);
+        dataDisplayEffect(true);
+      }
+
+      function dataDisplayEffect(newData) {
+        const carditemsjson = document.getElementsByClassName('card__item--json');
+        const color = newData ? '#a4e2a4' : '#fff';
+        [...carditemsjson].forEach((item) => (item.style.backgroundColor = color));
+        setTimeout(dataDisplayEffect, 300);
+      }
+
+      // ===============================================
+      // upload json file
+      // ===============================================
+
+      let isValidJsonFile = true;
+
+      const fileBrowseEle = document.getElementById('filebrowseinput');
+      const fileLabelEle = document.getElementById('filelabel');
+      const fileBtnSubmitEle = document.getElementById('filebtnsubmit');
+
+      fileBrowseEle.onchange = onSelectFileHandler;
+
+      function onSelectFileHandler(evt) {
+        const file = this.files[0];
+        checkJsonFileIsValid(file, (valid) => {
+          isValidJsonFile = valid;
+          if (isValidJsonFile) displayFileNameAndSubmitActive(file);
+          else {
+            clearFile(fileBrowseEle);
+            notifyFileNotValid();
+          }
+        });
+      }
+
+      function clearFile(fileBrowseEle) {
+        fileBrowseEle.value = '';
+      }
+
+      function checkJsonFileIsValid(file, cb) {
+        const reader = new FileReader();
+        reader.onload = function (event) {
+          try {
+            JSON.parse(event.target.result);
+            cb(true);
+          } catch (e) {
+            cb(false);
+          }
+        };
+        reader.readAsText(file);
+      }
+
+      function displayFileNameAndSubmitActive(file) {
+        fileLabelEle.textContent = file.name.substr(0, 30) + '..';
+        fileBtnSubmitEle.classList.add('active');
+      }
+
+      fileBtnSubmitEle.onclick = onFileBtnSubmitHandler;
+
+      function onFileBtnSubmitHandler(evt) {
+        if (fileBrowseEle.files.length == 0 || !isValidJsonFile) {
+          notifyChooseFile();
+          cancelUploadFileAndParse(evt);
+        }
+      }
+
+      function cancelUploadFileAndParse(evt) {
+        evt.preventDefault();
+      }
+
+      // ===============================================
+      // show message notify
+      // ===============================================
+
+      const messageEle = document.getElementById('message');
+      let messageTimeout = null;
+
+      function notifyFileNotValid() {
+        notifyShow('JSON file not valid !!');
+      }
+
+      function notifyChooseFile() {
+        notifyShow('Please Choose Json File');
+      }
+
+      function notifyShow(message) {
+        const clss = 'card--message-';
+        if (messageTimeout) clearTimeout(messageTimeout);
+        messageEle.textContent = message;
+        messageEle.classList.add(`${clss}show`);
+        messageTimeout = setTimeout(() => messageEle.classList.remove(`${clss}show`), 2000);
+      }
+    </script>
+  </body>
+</html>
